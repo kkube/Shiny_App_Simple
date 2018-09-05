@@ -7,7 +7,8 @@ ui <- fluidPage(
     sidebarPanel(
       textInput(inputId = "title", 
                 label = "Title", 
-                "GDP vs life exp")
+                "GDP vs life exp"),
+      numericInput("size", "Point size", 1, min =  1)
     ),
     mainPanel(
       plotOutput("plot")
@@ -18,7 +19,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$plot <- renderPlot({
     ggplot(gapminder, aes(gdpPercap, lifeExp)) +
-      geom_point() +
+      geom_point(size = input$size) +
       scale_x_log10() +
       ggtitle(input$title)
   })
