@@ -14,7 +14,10 @@ ui <- fluidPage(
                    min =  1),
       checkboxInput("fit", 
                     "Add line of best fit", 
-                    FALSE)
+                    FALSE),
+      radioButtons("color", 
+                   "Point color", 
+                   choices = c("blue", "red", "green", "black"))
     ),
     mainPanel(
       plotOutput("plot")
@@ -25,7 +28,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$plot <- renderPlot({
     p <- ggplot(gapminder, aes(gdpPercap, lifeExp)) +
-      geom_point(size = input$size) +
+      geom_point(size = input$size, col = input$color) +
       scale_x_log10() +
       ggtitle(input$title)
     
