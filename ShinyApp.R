@@ -17,7 +17,11 @@ ui <- fluidPage(
                     FALSE),
       radioButtons("color", 
                    "Point color", 
-                   choices = c("blue", "red", "green", "black"))
+                   choices = c("blue", "red", "green", "black")),
+      selectInput("continents", "Continents",
+                  choices = levels(gapminder$continent),
+                  multiple = TRUE,
+                  selected = "Americas")
     ),
     mainPanel(
       plotOutput("plot")
@@ -27,7 +31,10 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   output$plot <- renderPlot({
-    p <- ggplot(gapminder, aes(gdpPercap, lifeExp)) +
+    data <- subset(gapminder,
+                   continent %in% input$continents)
+    
+    p <- ggplot(data, aes(gdpPercap, lifeExp)) +
       geom_point(size = input$size, col = input$color) +
       scale_x_log10() +
       ggtitle(input$title)
