@@ -21,7 +21,12 @@ ui <- fluidPage(
       selectInput("continents", "Continents",
                   choices = levels(gapminder$continent),
                   multiple = TRUE,
-                  selected = "Americas")
+                  selected = "Americas"),
+      sliderInput("years", 
+                  "Years", 
+                  min = min(gapminder$year), 
+                  max = max(gapminder$year),
+                  value = c(1977,2002))
     ),
     mainPanel(
       plotOutput("plot")
@@ -32,7 +37,8 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$plot <- renderPlot({
     data <- subset(gapminder,
-                   continent %in% input$continents)
+                   continent %in% input$continents &
+                     year >= input$years[1] & year <= input$years[2])
     
     p <- ggplot(data, aes(gdpPercap, lifeExp)) +
       geom_point(size = input$size, col = input$color) +
