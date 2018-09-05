@@ -16,7 +16,9 @@ ui <- fluidPage(
       checkboxInput("fit", 
                     "Add line of best fit", 
                     FALSE),
-      colourInput("color", "Point color", "blue"),
+      colourInput("color", 
+                  "Point color", 
+                  "blue"),
       selectInput("continents", "Continents",
                   choices = levels(gapminder$continent),
                   multiple = TRUE,
@@ -28,7 +30,7 @@ ui <- fluidPage(
                   value = c(1977,2002))
     ),
     mainPanel(
-      plotOutput("plot")
+      plotOutput("plot", height = 600, width = 600)
     )
   )
 )
