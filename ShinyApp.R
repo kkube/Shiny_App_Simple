@@ -1,6 +1,7 @@
 library(shiny)
 library(gapminder)
 library(ggplot2)
+library(colourpicker)
 
 ui <- fluidPage(
   sidebarLayout(
@@ -15,9 +16,7 @@ ui <- fluidPage(
       checkboxInput("fit", 
                     "Add line of best fit", 
                     FALSE),
-      radioButtons("color", 
-                   "Point color", 
-                   choices = c("blue", "red", "green", "black")),
+      colourInput("color", "Point color", "blue"),
       selectInput("continents", "Continents",
                   choices = levels(gapminder$continent),
                   multiple = TRUE,
