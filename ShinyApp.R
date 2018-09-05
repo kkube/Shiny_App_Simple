@@ -2,6 +2,7 @@ library(shiny)
 library(gapminder)
 library(ggplot2)
 library(colourpicker)
+library(plotly)
 
 ui <- fluidPage(
   sidebarLayout(
@@ -30,14 +31,14 @@ ui <- fluidPage(
                   value = c(1977,2002))
     ),
     mainPanel(
-      plotOutput("plot", height = 600, width = 600)
+      plotlyOutput("plot", height = 600, width = 600)
     )
   )
 )
 
 server <- function(input, output) {
-  output$plot <- renderPlot({
-    data <- subset(gapminder,
+  output$plot <- renderPlotly({
+    ggplotly({data <- subset(gapminder,
                    continent %in% input$continents &
                      year >= input$years[1] & year <= input$years[2])
     
@@ -50,6 +51,7 @@ server <- function(input, output) {
       p <- p + geom_smooth(method="lm")
     }
     p
+  })
   })
 }
 
