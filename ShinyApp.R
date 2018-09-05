@@ -8,7 +8,13 @@ ui <- fluidPage(
       textInput(inputId = "title", 
                 label = "Title", 
                 "GDP vs life exp"),
-      numericInput("size", "Point size", 1, min =  1)
+      numericInput("size", 
+                   "Point size", 
+                   1, 
+                   min =  1),
+      checkboxInput("fit", 
+                    "Add line of best fit", 
+                    FALSE)
     ),
     mainPanel(
       plotOutput("plot")
@@ -18,10 +24,15 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   output$plot <- renderPlot({
-    ggplot(gapminder, aes(gdpPercap, lifeExp)) +
+    p <- ggplot(gapminder, aes(gdpPercap, lifeExp)) +
       geom_point(size = input$size) +
       scale_x_log10() +
       ggtitle(input$title)
+    
+    if (input$fit) {
+      p <- p + geom_smooth(method="lm")
+    }
+    p
   })
 }
 
